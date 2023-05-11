@@ -1,0 +1,37 @@
+debug: false
+
+spring:
+  config:
+    import: "secretsmanager:dev/aurora/apple"
+  cloud:
+    aws:
+      secrets-manager:
+        region: ap-northeast-2
+        provider-type: profile
+        profile: opsdev-sts
+  datasource:
+    username: ${dev/aurora/apple.username}
+    password: ${dev/aurora/apple.password}
+    url: ${dev/aurora/apple.host}
+    port: ${dev/aurora/apple.port}
+
+---
+spring:
+  config:
+    activate:
+      on-profile: local
+  cloud:
+    aws:
+      secrets-manager:
+        provider-type: profile
+
+---
+spring:
+  config:
+    activate:
+      on-profile: dev
+    import: "secretsmanager:dev/aurora/apple;dev/mygpt/oauth"
+  cloud:
+    aws:
+      secrets-manager:
+        provider-type: default
